@@ -7,4 +7,3 @@ def fibonnacci(n):
     return ''
 n = int(input())
 print(fibonnacci(n))
-print(fibonnacci(n))
