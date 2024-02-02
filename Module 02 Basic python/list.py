@@ -6,3 +6,6 @@ print(num[1:9:2])
 print(num[7:1:-2])
 print(num[2:])
 print(num[:3])
+print(num[:])
+print(num[::-1])
+
