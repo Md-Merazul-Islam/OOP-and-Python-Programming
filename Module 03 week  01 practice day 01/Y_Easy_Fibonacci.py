@@ -5,5 +5,6 @@ def fibonnacci(n):
         print(a,end=' ')
         a,b= b,a+b
     return ''
+#input
 n = int(input())
 print(fibonnacci(n))
