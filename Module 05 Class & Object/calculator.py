@@ -18,7 +18,7 @@ print("Enter the value of snd :")
 b= int(input())
 calc = calculator()
 
-ll
+kjh
 
 if s == "+":
     ans = calc.sum(a,b)
