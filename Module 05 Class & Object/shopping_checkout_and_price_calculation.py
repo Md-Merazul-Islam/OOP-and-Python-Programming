@@ -68,3 +68,4 @@ amount_ = int(input("Now give me money : "))
 toli.check_out(amount_)
 
 
+d
