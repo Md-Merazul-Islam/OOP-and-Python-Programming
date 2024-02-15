@@ -1,8 +1,6 @@
 # OOP-and-Python-Programming
 
-import webbrowser
 
-url = "https://mdmerazulislam.notion.site/mdmerazulislam/Md-Merazul-Islam-91f715d200734bd9a6b4031e319ea086"
+[Click here to visit my Notion page](https://mdmerazulislam.notion.site/mdmerazulislam/Md-Merazul-Islam-91f715d200734bd9a6b4031e319ea086){:target="_blank"}
 
-# Open URL in a new tab
-webbrowser.open_new_tab(url)
+
