@@ -25,9 +25,6 @@ print(dog.sound())
 print(Cat("").sound())
 
 
-
-
-
 # composition:
 class Engine():
     def star(self):
