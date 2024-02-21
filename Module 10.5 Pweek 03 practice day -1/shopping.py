@@ -11,12 +11,14 @@ class Shopping:
                 return
         user = {'email': email, 'password': password, 'type': user_type}
         self.users.append(user)
+       
         return user
 
     def add_product(self, product_id, name, price, quantity):
         product = {'id': product_id, 'name': name,
                    'price': price, 'quantity': quantity}
         self.products_list.append(product)
+        
 
     def show_products_list(self):
         print("Products List : ")
