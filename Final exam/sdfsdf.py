@@ -1,38 +1,7 @@
-"""
-account -> name, email, address, acountType 
-------------------------------------------------------------------
-                        user
------------------------------------------------------------------
-atribute -> balance =0, account num += len(user[])
-method -> 
-0.if bank deoliya then chek 
-1.deposite (error handling)
-2.withdraw, (error handleing) (if bank not deuliya)
-3.available balance 
-4.transfer history 
-5.loan max 2 time (admin check )
-6.transfer balanace account to account if this use is valid
-------------------------------------------------------------------
-
-
---------------------------------------------------------
-                        admin
---------------------------------------------------------
-method->
-1. create account
-2.delete any user
-3.see all user acount list
-4.can chk total available balance 
-5.total loan
-6.can off loan future
-
-"""
-
-
-
 
 import random
 from datetime import datetime
+
 
 class Account:
     accounts = []
@@ -46,15 +15,16 @@ class Account:
         self.account_number = self.generate_random_account_number()
         self.balance = 0
         self.loan_count = 0
-        self.total_loan =0
+        self.total_loan = 0
         self.transfer_history = []
-        self.is_bankrupt = False
+        self.bankrupt = False
         self.loan_permission = True
         self.transfer_permission = True
         Account.accounts.append(self)
 
     def generate_random_account_number(self):
         return "".join(str(random.randint(0, 9)) for i in range(2))
+
 
 class User(Account):
     def __init__(self, name, email, address, account_type) -> None:
@@ -64,8 +34,10 @@ class User(Account):
         if amount > 0:
             self.balance += amount
             Account.total_bank_balance += amount
-            self.transfer_history.append(("Deposit", amount, self.account_number, datetime.now()))
-            print(f'\n\t{amount} Tk successfully deposited. Now your new balance is {self.balance} Tk')
+            self.transfer_history.append(
+                ("Deposit", amount, self.account_number, datetime.now()))
+            print(
+                f'\n\t{amount} Tk successfully deposited. Now your new balance is {self.balance} Tk')
         else:
             print('\n\tInvalid deposit amount!')
 
@@ -75,8 +47,10 @@ class User(Account):
                 if self.balance >= amount:
                     self.balance -= amount
                     Account.total_bank_balance -= amount
-                    self.transfer_history.append(("Withdrawal", amount, self.account_number, datetime.now()))
-                    print(f'\n\t{amount} Tk successfully withdrawn. Now your available balance is {self.balance} Tk')
+                    self.transfer_history.append(
+                        ("Withdrawal", amount, self.account_number, datetime.now()))
+                    print(
+                        f'\n\t{amount} Tk successfully withdrawn. Now your available balance is {self.balance} Tk')
                 else:
                     print('\n\tInsufficient balance!')
             else:
@@ -91,12 +65,15 @@ class User(Account):
         if self.transfer_permission:
             if amount > 0:
                 if self.balance >= amount:
-                    receiver = next((acc for acc in Account.accounts if isinstance(acc, User) and acc.account_number == account_no), None)
+                    receiver = next((acc for acc in Account.accounts if isinstance(
+                        acc, User) and acc.account_number == account_no), None)
                     if receiver:
                         receiver.deposit(amount)
                         self.balance -= amount
-                        self.transfer_history.append(("Transfer", amount, receiver.account_number, datetime.now()))
-                        print(f'\n\t{amount} Tk transferred from account {self.account_number} to account {receiver.account_number} successfully')
+                        self.transfer_history.append(
+                            ("Transfer", amount, receiver.account_number, datetime.now()))
+                        print(
+                            f'\n\t{amount} Tk transferred from account {self.account_number} to account {receiver.account_number} successfully')
                     else:
                         print('\n\tReceiver account not found!')
                 else:
@@ -118,13 +95,17 @@ class User(Account):
             if self.loan_count < 2:
                 self.balance += amount
                 self.loan_count += 1
-                self.total_loan+= amount
                 Account.total_bank_balance -= amount
-                print(f'\n\tLoan of {amount} Tk successfully taken. New balance is {self.balance} Tk')
+                self.total_loan+= amount
+                print(
+                    f'\n\tLoan of {amount} Tk successfully taken. New balance is {self.balance} Tk')
             else:
                 print('\n\tMaximum number of loans already taken!')
         else:
             print('\n\tLoan system is disabled by admin!')
+            
+
+
 
 class Admin(Account):
     def __init__(self, name, email, address) -> None:
@@ -132,7 +113,8 @@ class Admin(Account):
 
     def create_account(self, name, email, address, account_type):
         user = User(name, email, address, account_type)
-        print(f"Account created for {name} with email {email} and account number {user.account_number}")
+        print(
+            f"Account created for {name} with email {email} and account number {user.account_number}")
 
     def delete_any_user(self, account_name):
         for acc in Account.accounts:
@@ -148,10 +130,12 @@ class Admin(Account):
         print('-------------------------------------------------------------------------------------------------------------')
         for acc in Account.accounts:
             if isinstance(acc, User):
-                print(f'\t{acc.name} \t\t {acc.email} \t{acc.address} \t\t {acc.account_type}')
+                print(
+                    f'\t{acc.name} \t\t {acc.email} \t{acc.address} \t\t {acc.account_type}')
 
     def check_total_available_balance(self):
-        print(f'\n\tBank total available balance is : {Account.total_bank_balance} Tk')
+        print(
+            f'\n\tBank total available balance is : {Account.total_bank_balance} Tk')
 
     def show_total_loan(self):
         print(f'\n\tTotal loan is : {self.total_loan} Tk')
@@ -194,8 +178,8 @@ class Admin(Account):
 
 
 admin = Admin("admin", "admin@gmail.com", "kasimpur")
-user1 = User("rakib", "rakib@gmail.com", "rajbari","user")
-user2 = User("sakib", "sakib@gmail.com", "shegubbag","user")
+user1 = User("rakib", "rakib@gmail.com", "rajbari", "user")
+user2 = User("sakib", "sakib@gmail.com", "shegubbag", "user")
 
 currentUser = None
 while True:
@@ -208,7 +192,8 @@ while True:
                 name = input("\n\tName : ")
                 email = input("\n\tEmail : ")
                 address = input("\n\tAddress : ")
-                account_type = input("\n\tAccount type: Savings or Current?  (sv/cr) : ")
+                account_type = input(
+                    "\n\tAccount type: Savings or Current?  (sv/cr) : ")
                 User(name, email, address, account_type)
                 currentUser = User(name, email, address, account_type)
             elif option == 'l':
@@ -261,7 +246,8 @@ while True:
                 amount = int(input("\n\tEnter the amount to loan : "))
                 currentUser.take_loan(amount)
             elif op == 6:
-                account_no = input("\n\tEnter the account number to transfer : ")
+                account_no = input(
+                    "\n\tEnter the account number to transfer : ")
                 amount = int(input("\n\tEnter the amount to transfer : "))
                 currentUser.transfer_balance(account_no, amount)
             elif op == 7:
@@ -285,7 +271,8 @@ while True:
                 name = input("\n\tName : ")
                 email = input("\n\tEmail : ")
                 address = input("\n\tAddress : ")
-                account_type = input("\n\tAccount type: User or Admin?  (user/admin) : ")
+                account_type = input(
+                    "\n\tAccount type: User or Admin?  (user/admin) : ")
                 currentUser.create_account(name, email, address, account_type)
             elif op == 2:
                 name = input("\n\tEnter the account name to delete : ")
@@ -297,11 +284,13 @@ while True:
             elif op == 5:
                 currentUser.show_total_loan()
             elif op == 6:
-                cmd = input("\n\tDo you want to turn off loan feature? (yes/no)  : ").lower()
+                cmd = input(
+                    "\n\tDo you want to turn off loan feature? (yes/no)  : ").lower()
                 if cmd == "yes":
                     currentUser.permission_loan_on_off(False)
             elif op == 7:
-                cmd = input("\n\tDo you want to turn off transfer feature? (yes/no)  : ").lower()
+                cmd = input(
+                    "\n\tDo you want to turn off transfer feature? (yes/no)  : ").lower()
                 if cmd == 'yes':
                     currentUser.transfer_permission_on_off(False)
 
