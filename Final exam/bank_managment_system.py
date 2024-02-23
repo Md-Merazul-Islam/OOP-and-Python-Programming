@@ -1,4 +1,3 @@
-
 import random
 from datetime import datetime
 
@@ -16,6 +15,7 @@ class Account:
         self.account_number = self.generate_random_account_number()
         self.balance = 0
         self.loan_count = 0
+        self.loan_amount = 0
         self.transfer_history = []
         self.bankrupt = False
         self.loan_permission = True
@@ -29,6 +29,24 @@ class Account:
 class User(Account):
     def __init__(self, name, email, address, account_type) -> None:
         super().__init__(name, email, address, account_type)
+
+    def take_loan(self, amount):
+        if self.loan_permission:
+            if self.loan_count <= 2:
+                self.balance += amount
+                self.loan_count += 1
+                self.loan_amount += amount
+                Account.total_loan += amount
+                Account.total_bank_balance -= amount
+                print(
+                    f'\n\tLoan of {amount} Tk successfully taken. New balance is {self.balance} Tk')
+            else:
+                print('\n\tMaximum number of loans already taken!')
+        else:
+            print('\n\tLoan system is disabled by admin!')
+
+    def display_loan_amount(self):
+        print(f'\n\tYour total loan amount is {self.loan_amount} Tk')
 
     def deposit(self, amount):
         if amount > 0:
@@ -60,7 +78,6 @@ class User(Account):
 
     def available_balance(self):
         print(f'\n\tYour available balance is {self.balance} Tk')
-    
 
     def transfer_balance(self, account_no, amount):
         if self.transfer_permission:
@@ -89,27 +106,16 @@ class User(Account):
         print(f"\tTransaction Type  \t Amount    \t  Account No \t\t\tDate Time ")
         print('----------------------------------------------------------------------------------------------------------')
         for tr in self.transfer_history:
-            print(f"   \t{tr[0]} \t\t {tr[1]} Tk \t\t\t     {tr[2]} \t\t {tr[3]}")
+            print(
+                f"   \t{tr[0]} \t\t {tr[1]} Tk \t\t\t     {tr[2]} \t\t {tr[3]}")
 
-    def take_loan(self, amount):
-        if self.loan_permission:
-            if self.loan_count < 2:
-                self.balance += amount
-                self.loan_count += 1
-                self.total_loan += amount
-                Account.total_bank_balance -= amount
-                print(
-                    f'\n\tLoan of {amount} Tk successfully taken. New balance is {self.balance} Tk')
-            else:
-                print('\n\tMaximum number of loans already taken!')
-        else:
-            print('\n\tLoan system is disabled by admin!')
+
 class Admin(Account):
     def __init__(self, name, email, address) -> None:
         super().__init__(name, email, address, "Admin")
 
     def show_total_loan(self):
-        print(f'\n\tTotal loan is : {Account.total_loan} Tk')
+        print(f'\n\tBank total loan is : {Account.total_loan} Tk')
 
     def create_account(self, name, email, address, account_type):
         user = User(name, email, address, account_type)
@@ -136,7 +142,6 @@ class Admin(Account):
     def check_total_available_balance(self):
         print(
             f'\n\tBank total available balance is : {Account.total_bank_balance} Tk')
-
 
     def permission_loan_on_off(self, is_loan):
         if not is_loan:
@@ -227,7 +232,8 @@ while True:
             print("\t4. Transaction history")
             print("\t5. Take Loan")
             print("\t6. Transfer balance to another account")
-            print("\t7. Logout")
+            print("\t7. My total loan")
+            print("\t8. Logout")
 
             op = int(input("\n\tChoose an option : "))
             if op == 1:
@@ -249,6 +255,8 @@ while True:
                 amount = int(input("\n\tEnter the amount to transfer : "))
                 currentUser.transfer_balance(account_no, amount)
             elif op == 7:
+                currentUser.display_loan_amount()
+            elif op == 8:
                 currentUser = None
             else:
                 print("\n\tInvalid option!")
@@ -263,7 +271,7 @@ while True:
             print("\t7. Turn off transfer feature")
             print("\t8. Bankrupt ")
             print("\t9. Logout")
-
+            # admin = Admin("admin", "admin@gmail.com", "kasimpur")
             op = int(input("\n\tChoose an option : "))
             if op == 1:
                 name = input("\n\tName : ")
@@ -281,6 +289,7 @@ while True:
                 currentUser.check_total_available_balance()
             elif op == 5:
                 currentUser.show_total_loan()
+
             elif op == 6:
                 cmd = input(
                     "\n\tDo you want to turn off loan feature? (yes/no)  : ").lower()
